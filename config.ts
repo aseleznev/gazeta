@@ -1,0 +1,1 @@
+export const appConfig = require('config.json')(__dirname + '/config.json', process.env.NODE_ENV || 'sandbox');
