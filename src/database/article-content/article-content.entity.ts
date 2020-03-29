@@ -12,7 +12,7 @@ export class ArticleContentEntity {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column('number', { nullable: false })
+    @Column('integer', { nullable: false })
     order: number;
 
     @Column('date', { nullable: false })
