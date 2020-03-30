@@ -10,15 +10,14 @@ async function bootstrap() {
         .setDescription('Gazprom nedra corporate newspaper')
         .setVersion('1.0')
         .addTag('release')
-        // .addTag('article')
-        // .addTag('article-content')
-        // .addTag('tag')
-        // .addTag('image')
+        .addTag('article')
+        .addTag('article-content')
+        .addTag('tag')
+        .addTag('image')
         .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api', app, document);
 
-    //await app.listen(appConfig.node.port);
     await app.listen(3000);
     console.log(`Application is running on: ${await app.getUrl()}`);
 }

@@ -12,22 +12,18 @@ export class ReleaseController {
 
     @Get()
     @ApiOperation({ summary: 'Get all releases' })
-    async getReleases():Promise<ReleaseEntity[]> {
+    async getReleases(): Promise<ReleaseEntity[]> {
         return await this.releaseService.findAll();
     }
 
     @Get(':id')
     @ApiOperation({ summary: 'Get release for id' })
-    @ApiImplicitParam({ name: 'id', type: Number })
-    async getRelease(@Param('id') id: number): Promise<ReleaseEntity> {
-        return await this.releaseService.find(id);
+    @ApiImplicitParam({ name: 'id', type: String })
+    async getRelease(@Param('id') id: string): Promise<ReleaseEntity> {
+        return await this.releaseService.find(+id);
     }
 
     @Post()
-    @ApiCreatedResponse({
-        description: 'The release has been successfully created.',
-        type: ReleaseEntity
-    })
     @ApiOperation({ summary: 'Create release' })
     @ApiImplicitBody({
         content: {},
@@ -38,6 +34,7 @@ export class ReleaseController {
         isArray: false
     })
     async saveRelease(@Body() release: ReleaseEntity): Promise<ReleaseEntity> {
-        return this.releaseService.save(release);
+        const releaseEntity = new ReleaseEntity(release);
+        return await this.releaseService.save(releaseEntity);
     }
 }
