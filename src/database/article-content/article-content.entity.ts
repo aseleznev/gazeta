@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from '../article/article.entity';
 import { ImageEntity } from '../image/image.entity';
-import {ApiProperty} from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('article-content')
 export class ArticleContentEntity {
@@ -30,11 +30,11 @@ export class ArticleContentEntity {
     @Column('text', { nullable: true })
     text: string;
 
-    @ApiProperty()
+    @ApiProperty({ type: () => ArticleEntity })
     @ManyToOne(type => ArticleEntity)
     article: ArticleEntity;
 
-    @ApiProperty()
+    @ApiProperty({ type: () => ImageEntity })
     @OneToOne(type => ImageEntity, { nullable: true })
     @JoinColumn()
     image: ImageEntity;

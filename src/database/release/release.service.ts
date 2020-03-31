@@ -11,11 +11,11 @@ export class ReleaseService {
     ) {}
 
     async findAll(): Promise<ReleaseEntity[]> {
-        return await this.releaseRepository.find();
+        return await this.releaseRepository.find({ relations: ['image'] });
     }
 
     async find(id: number): Promise<ReleaseEntity> {
-        return await this.releaseRepository.findOne(id);
+        return await this.releaseRepository.findOne(id, { relations: ['image', 'articles', 'articles.image'] });
     }
 
     async save(release: ReleaseEntity): Promise<ReleaseEntity> {

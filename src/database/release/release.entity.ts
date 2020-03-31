@@ -30,6 +30,7 @@ export class ReleaseEntity {
     @Column('text', { nullable: true })
     description: string;
 
+    @ApiProperty({ type: () => ArticleEntity })
     @OneToMany(
         type => ArticleEntity,
         article => article.release,
@@ -37,7 +38,7 @@ export class ReleaseEntity {
     )
     articles: ArticleEntity[];
 
-    @ApiProperty()
+    @ApiProperty({ type: () => ImageEntity })
     @OneToOne(type => ImageEntity, { nullable: true })
     @JoinColumn()
     image: ImageEntity;

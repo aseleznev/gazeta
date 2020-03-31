@@ -41,11 +41,11 @@ export class ArticleEntity {
     @Column('text', { nullable: true })
     description: string;
 
-    @ApiProperty()
+    @ApiProperty({ type: () => ReleaseEntity })
     @ManyToOne(type => ReleaseEntity)
     release: ReleaseEntity;
 
-    @ApiProperty()
+    @ApiProperty({ type: () => ArticleContentEntity, isArray: true })
     @OneToMany(
         type => ArticleContentEntity,
         content => content.article,
@@ -53,12 +53,12 @@ export class ArticleEntity {
     )
     content: ArticleContentEntity[];
 
-    @ApiProperty()
-    @ManyToMany(type => TagEntity)
+    @ApiProperty({ type: () => TagEntity, isArray: true })
+    @ManyToMany(type => TagEntity, { nullable: true })
     @JoinTable()
-    tag: TagEntity[];
+    tags: TagEntity[];
 
-    @ApiProperty()
+    @ApiProperty({ type: () => ImageEntity })
     @OneToOne(type => ImageEntity, { nullable: true })
     @JoinColumn()
     image: ImageEntity;

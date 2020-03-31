@@ -11,11 +11,11 @@ export class ArticleService {
     ) {}
 
     async findAll(): Promise<ArticleEntity[]> {
-        return await this.articleRepository.find();
+        return await this.articleRepository.find({ relations: ['image'] });
     }
 
     async find(id: number): Promise<ArticleEntity> {
-        return await this.articleRepository.findOne(id);
+        return await this.articleRepository.findOne(id, { relations: ['content', 'content.image', 'tags'] });
     }
 
     async save(article: ArticleEntity): Promise<ArticleEntity> {

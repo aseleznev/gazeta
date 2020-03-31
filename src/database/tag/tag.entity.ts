@@ -1,6 +1,7 @@
 import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import { ImageEntity } from '../image/image.entity';
 import {ApiProperty} from "@nestjs/swagger";
+import {ArticleEntity} from "../article/article.entity";
 
 @Entity('tag')
 export class TagEntity {
@@ -22,7 +23,7 @@ export class TagEntity {
     @Column('text', { nullable: true })
     description: string;
 
-    @ApiProperty()
+    @ApiProperty({ type: () => ImageEntity })
     @OneToOne(type => ImageEntity)
     @JoinColumn()
     image: ImageEntity;
