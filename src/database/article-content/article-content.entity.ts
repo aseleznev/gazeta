@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from '../article/article.entity';
 import { ImageEntity } from '../image/image.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { ReleaseEntity } from "../release/release.entity";
 
 @Entity('article-content')
 export class ArticleContentEntity {
@@ -11,16 +12,12 @@ export class ArticleContentEntity {
         }
     }
     @ApiProperty()
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+    @PrimaryColumn('varchar', { length: 30 })
+    id: string;
 
     @ApiProperty()
     @Column('integer', { nullable: false })
     order: number;
-
-    @ApiProperty()
-    @Column('date', { nullable: false })
-    date: string;
 
     @ApiProperty()
     @Column('varchar', { nullable: false })
@@ -31,11 +28,11 @@ export class ArticleContentEntity {
     text: string;
 
     @ApiProperty({ type: () => ArticleEntity })
-    @ManyToOne(type => ArticleEntity)
+    @ManyToOne(type => ArticleEntity, {onDelete: 'CASCADE'})
     article: ArticleEntity;
 
     @ApiProperty({ type: () => ImageEntity })
-    @OneToOne(type => ImageEntity, { nullable: true })
+    @OneToOne(type => ImageEntity, { cascade: true, nullable: true, onDelete: 'CASCADE' })
     @JoinColumn()
     image: ImageEntity;
 }

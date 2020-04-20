@@ -11,11 +11,27 @@ export class ArticleService {
     ) {}
 
     async findAll(): Promise<ArticleEntity[]> {
-        return await this.articleRepository.find({ relations: ['image'] });
+        return await this.articleRepository.find({ relations: ['tags', 'author', 'image'] });
     }
 
-    async find(id: number): Promise<ArticleEntity> {
-        return await this.articleRepository.findOne(id, { relations: ['content', 'content.image', 'tags'] });
+    async find(id: string): Promise<ArticleEntity> {
+        // return await this.articleRepository.findOne(id, {
+        //     relations: ['tags', 'author', 'image', 'content', 'content.image']
+        // });
+
+        const article = await this.articleRepository
+            .createQueryBuilder('article')
+            .innerJoinAndSelect('article.image', 'articleImage')
+            .innerJoinAndSelect('article.author', 'author')
+            .innerJoinAndSelect('article.tags', 'tags')
+            .innerJoinAndSelect('article.content', 'content')
+            .leftJoinAndSelect('content.image', 'image')
+            .where('article.id=:id')
+            .setParameter('id', id)
+            .orderBy('content.order', 'ASC')
+            .getOne();
+
+        return article;
     }
 
     async save(article: ArticleEntity): Promise<ArticleEntity> {

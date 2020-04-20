@@ -20,7 +20,7 @@ export class ReleaseController {
     @ApiOperation({ summary: 'Get release for id' })
     @ApiImplicitParam({ name: 'id', type: String })
     async getRelease(@Param('id') id: string): Promise<ReleaseEntity> {
-        return await this.releaseService.find(+id);
+        return await this.releaseService.find(id);
     }
 
     @Post()
@@ -35,6 +35,7 @@ export class ReleaseController {
     })
     async saveRelease(@Body() release: ReleaseEntity): Promise<ReleaseEntity> {
         const releaseEntity = new ReleaseEntity(release);
+        await this.releaseService.delete(release.id);
         return await this.releaseService.save(releaseEntity);
     }
 }

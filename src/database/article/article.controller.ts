@@ -18,8 +18,8 @@ export class ArticleController {
 
     @Get(':id')
     @ApiOperation({ summary: 'Get article for id' })
-    @ApiImplicitParam({ name: 'id', type: Number })
-    async getArticle(@Param('id') id: number): Promise<ArticleEntity> {
+    @ApiImplicitParam({ name: 'id', type: String })
+    async getArticle(@Param('id') id: string): Promise<ArticleEntity> {
         return await this.articleService.find(id);
     }
 

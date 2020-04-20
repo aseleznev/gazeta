@@ -8,14 +8,21 @@ import { ArticleContentModule } from './database/article-content/article-content
 import { TagModule } from './database/tag/tag.module';
 import { ImageModule } from './database/image/image.module';
 import { ConfigModule, ConfigService } from 'nestjs-config';
-import * as path from 'path';
+import { join, resolve } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { AuthorModule } from "./database/author/author.module";
 
 const ENV = process.env.NODE_ENV;
 
 @Module({
     imports: [
-        ConfigModule.load(path.resolve(__dirname, 'config', '**', '!(*.d).{ts,js}'),{
-            path: path.resolve(process.cwd(), !ENV ? '.env' : `.env.${ENV}`),
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'storage')
+            //serveStaticOptions: { extensions: ['png'] }
+            //exclude: ['/api*']
+        }),
+        ConfigModule.load(resolve(__dirname, 'config', '**', '!(*.d).{ts,js}'), {
+            path: resolve(process.cwd(), !ENV ? '.env' : `.env.${ENV}`)
         }),
         TypeOrmModule.forRootAsync({
             useFactory: (config: ConfigService) => config.get('appConfig'),
@@ -25,7 +32,8 @@ const ENV = process.env.NODE_ENV;
         ArticleModule,
         ArticleContentModule,
         TagModule,
-        ImageModule
+        ImageModule,
+        AuthorModule
     ],
     controllers: [AppController],
     providers: [AppService]

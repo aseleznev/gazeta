@@ -1,7 +1,8 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { ImageEntity } from '../image/image.entity';
-import {ApiProperty} from "@nestjs/swagger";
-import {ArticleEntity} from "../article/article.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { ArticleEntity } from '../article/article.entity';
+import { ReleaseEntity } from "../release/release.entity";
 
 @Entity('tag')
 export class TagEntity {
@@ -12,7 +13,7 @@ export class TagEntity {
     }
 
     @ApiProperty()
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn('varchar', { length: 30 })
     id: string;
 
     @ApiProperty()
@@ -24,7 +25,16 @@ export class TagEntity {
     description: string;
 
     @ApiProperty({ type: () => ImageEntity })
-    @OneToOne(type => ImageEntity)
+    @OneToOne(type => ImageEntity, {onDelete: 'CASCADE'})
     @JoinColumn()
     image: ImageEntity;
+
+    @ApiProperty({ type: () => ArticleEntity, isArray: true })
+    @ManyToMany(
+        type => ArticleEntity,
+        article => article.tags,
+        { nullable: true }
+    )
+    @JoinTable()
+    articles: ArticleEntity[];
 }

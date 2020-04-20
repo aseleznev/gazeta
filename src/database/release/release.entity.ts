@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { ImageEntity } from '../image/image.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { ArticleEntity } from '../article/article.entity';
@@ -15,8 +15,8 @@ export class ReleaseEntity {
     }
 
     @ApiProperty()
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+    @PrimaryColumn('varchar', { length: 30 })
+    id: string;
 
     @ApiProperty()
     @Column('varchar', { nullable: true })
@@ -34,12 +34,12 @@ export class ReleaseEntity {
     @OneToMany(
         type => ArticleEntity,
         article => article.release,
-        { cascade: true }
+        { cascade: true, onDelete: 'CASCADE' }
     )
     articles: ArticleEntity[];
 
     @ApiProperty({ type: () => ImageEntity })
-    @OneToOne(type => ImageEntity, { nullable: true })
+    @OneToOne(type => ImageEntity, { cascade: true, nullable: true, onDelete: 'CASCADE' })
     @JoinColumn()
     image: ImageEntity;
 }

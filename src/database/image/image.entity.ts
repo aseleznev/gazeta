@@ -1,5 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import {ApiProperty} from "@nestjs/swagger";
+import { Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { ReleaseEntity } from '../release/release.entity';
+import { ArticleEntity } from '../article/article.entity';
+import { ArticleContentEntity } from '../article-content/article-content.entity';
 
 @Entity('image')
 export class ImageEntity {
@@ -10,22 +13,36 @@ export class ImageEntity {
     }
 
     @ApiProperty()
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn('varchar', { length: 30 })
     id: string;
 
     @ApiProperty()
     @Column('varchar', { nullable: true })
-    title: string;
-
-    @ApiProperty()
-    @Column('varchar', { nullable: true })
-    path: string;
-
-    @ApiProperty()
-    @Column('text', { nullable: true })
-    description: string;
-
-    @ApiProperty()
-    @Column('varchar', { nullable: true })
     alt: string;
+
+    @ApiProperty()
+    @Column('varchar', { nullable: true })
+    src: string;
+
+    @ApiProperty()
+    @Column('varchar', { nullable: true })
+    filename: string;
+
+    @OneToOne(
+        type => ReleaseEntity,
+        release => release.image, {onDelete: 'CASCADE'}
+    ) // specify inverse side as a second parameter
+    release: ReleaseEntity;
+
+    @OneToOne(
+        type => ArticleEntity,
+        article => article.image, {onDelete: 'CASCADE'}
+    ) // specify inverse side as a second parameter
+    article: ArticleEntity;
+
+    @OneToOne(
+        type => ArticleContentEntity,
+        articleContent => articleContent.image, {onDelete: 'CASCADE'}
+    ) // specify inverse side as a second parameter
+    articleContent: ArticleContentEntity;
 }
