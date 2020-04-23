@@ -16,11 +16,11 @@ const ENV = process.env.NODE_ENV;
 
 @Module({
     imports: [
-        ServeStaticModule.forRoot({
-            rootPath: join(__dirname, '..', 'storage')
-            //serveStaticOptions: { extensions: ['png'] }
-            //exclude: ['/api*']
-        }),
+        // ServeStaticModule.forRoot({
+        //     rootPath: join(__dirname, '..', 'storage')
+        //     //serveStaticOptions: { extensions: ['png'] }
+        //     //exclude: ['/api*']
+        // }),
         ConfigModule.load(resolve(__dirname, 'config', '**', '!(*.d).{ts,js}'), {
             path: resolve(process.cwd(), !ENV ? '.env' : `.env.${ENV}`)
         }),
