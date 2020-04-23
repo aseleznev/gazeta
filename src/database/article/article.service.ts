@@ -15,9 +15,6 @@ export class ArticleService {
     }
 
     async find(id: string): Promise<ArticleEntity> {
-        // return await this.articleRepository.findOne(id, {
-        //     relations: ['tags', 'author', 'image', 'content', 'content.image']
-        // });
 
         const article = await this.articleRepository
             .createQueryBuilder('article')
