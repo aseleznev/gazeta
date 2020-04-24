@@ -1,6 +1,6 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
-import { ApiProperty } from '@nestjs/swagger';
-import { ArticleEntity } from '../article/article.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
+import { ArticleEntity } from "../article/article.entity";
 
 @Entity('author')
 export class AuthorEntity {
@@ -20,8 +20,7 @@ export class AuthorEntity {
 
     @OneToMany(
       type => ArticleEntity,
-      article => article.author,
-      { onDelete: 'CASCADE' }
+      article => article.author
     )
     articles: ArticleEntity[];
 }

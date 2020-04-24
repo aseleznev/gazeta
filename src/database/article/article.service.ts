@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { ArticleEntity } from './article.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { ArticleEntity } from "./article.entity";
 
 @Injectable()
 export class ArticleService {
@@ -31,7 +31,19 @@ export class ArticleService {
         return article;
     }
 
+
     async save(article: ArticleEntity): Promise<ArticleEntity> {
         return await this.articleRepository.save(article);
     }
+
+    async delete(id: string): Promise<ArticleEntity> {
+        const article = await this.articleRepository.findOne(id);
+        if (!article){
+            return article;
+        }
+        return  await this.articleRepository.remove(article);
+        //return await this.articleRepository.delete({ id });
+
+    }
+
 }

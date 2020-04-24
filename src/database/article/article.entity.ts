@@ -62,7 +62,7 @@ export class ArticleEntity {
     @ManyToMany(
         type => TagEntity,
         tag => tag.articles,
-        { cascade: true, nullable: true, onDelete: 'CASCADE' }
+        { cascade: true, nullable: true }
     )
     @JoinTable()
     tags: TagEntity[];
@@ -73,6 +73,6 @@ export class ArticleEntity {
     image: ImageEntity;
 
     @ApiProperty({ type: () => AuthorEntity })
-    @ManyToOne(type => AuthorEntity, { cascade: true, nullable: true, onDelete: 'CASCADE' })
+    @ManyToOne(type => AuthorEntity, { cascade: true, nullable: true })
     author: AuthorEntity;
 }

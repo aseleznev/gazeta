@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { ReleaseEntity } from './release.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { ReleaseEntity } from "./release.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class ReleaseService {
@@ -15,9 +15,6 @@ export class ReleaseService {
     }
 
     async find(id: string): Promise<ReleaseEntity> {
-        // return await this.releaseRepository.findOne(id, {
-        //     relations: ['image', 'articles', 'articles.image', 'articles.author', 'articles.tags']
-        // });
 
         const release = await this.releaseRepository
             .createQueryBuilder('release')
@@ -38,7 +35,13 @@ export class ReleaseService {
         return await this.releaseRepository.save(release);
     }
 
-    async delete(id: string): Promise<DeleteResult> {
-        return await this.releaseRepository.delete({ id });
+    async delete(id: string): Promise<ReleaseEntity> {
+        const release = await this.releaseRepository.findOne(id);
+        if (!release){
+            return release;
+        }
+        return await this.releaseRepository.remove(release);
+
+        //return await this.releaseRepository.delete({ id });
     }
 }

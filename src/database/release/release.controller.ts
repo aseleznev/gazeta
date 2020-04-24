@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiTags, ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ReleaseService } from './release.service';
-import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
-import { ReleaseEntity } from './release.entity';
-import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ReleaseService } from "./release.service";
+import { ApiImplicitParam } from "@nestjs/swagger/dist/decorators/api-implicit-param.decorator";
+import { ReleaseEntity } from "./release.entity";
+import { ApiImplicitBody } from "@nestjs/swagger/dist/decorators/api-implicit-body.decorator";
 
 @ApiTags('release')
 @Controller('release')
@@ -34,8 +34,15 @@ export class ReleaseController {
         isArray: false
     })
     async saveRelease(@Body() release: ReleaseEntity): Promise<ReleaseEntity> {
-        const releaseEntity = new ReleaseEntity(release);
+        // const releaseEntity = new ReleaseEntity(release);
         await this.releaseService.delete(release.id);
-        return await this.releaseService.save(releaseEntity);
+        return await this.releaseService.save(release);
+    }
+
+    @Delete(':id')
+    @ApiOperation({ summary: 'Delete release' })
+    @ApiImplicitParam({ name: 'id', type: String })
+    async deleteRelease(@Param() id: string): Promise<ReleaseEntity> {
+        return this.releaseService.delete(id);
     }
 }

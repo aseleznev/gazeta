@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
-import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
-import { ArticleService } from './article.service';
-import { ArticleEntity } from './article.entity';
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiImplicitParam } from "@nestjs/swagger/dist/decorators/api-implicit-param.decorator";
+import { ApiImplicitBody } from "@nestjs/swagger/dist/decorators/api-implicit-body.decorator";
+import { ArticleService } from "./article.service";
+import { ArticleEntity } from "./article.entity";
 
 @ApiTags('article')
 @Controller('article')
@@ -35,5 +35,12 @@ export class ArticleController {
     })
     async saveArticle(@Body() article: ArticleEntity): Promise<ArticleEntity> {
         return this.articleService.save(article);
+    }
+
+    @Delete(':id')
+    @ApiOperation({ summary: 'Delete article' })
+    @ApiImplicitParam({ name: 'id', type: String })
+    async deleteArticle(@Param() id: string): Promise<ArticleEntity> {
+        return this.articleService.delete(id);
     }
 }
