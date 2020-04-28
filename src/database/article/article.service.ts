@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { ArticleEntity } from "./article.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ArticleEntity } from './article.entity';
 
 @Injectable()
 export class ArticleService {
@@ -15,14 +15,13 @@ export class ArticleService {
     }
 
     async find(id: string): Promise<ArticleEntity> {
-
         const article = await this.articleRepository
             .createQueryBuilder('article')
-            .innerJoinAndSelect('article.image', 'articleImage')
-            .innerJoinAndSelect('article.author', 'author')
-            .innerJoinAndSelect('article.tags', 'tags')
             .innerJoinAndSelect('article.content', 'content')
             .leftJoinAndSelect('content.image', 'image')
+            .leftJoinAndSelect('article.image', 'articleImage')
+            .leftJoinAndSelect('article.author', 'author')
+            .leftJoinAndSelect('article.tags', 'tags')
             .where('article.id=:id')
             .setParameter('id', id)
             .orderBy('content.order', 'ASC')
@@ -31,19 +30,16 @@ export class ArticleService {
         return article;
     }
 
-
     async save(article: ArticleEntity): Promise<ArticleEntity> {
         return await this.articleRepository.save(article);
     }
 
     async delete(id: string): Promise<ArticleEntity> {
         const article = await this.articleRepository.findOne(id);
-        if (!article){
+        if (!article) {
             return article;
         }
-        return  await this.articleRepository.remove(article);
+        return await this.articleRepository.remove(article);
         //return await this.articleRepository.delete({ id });
-
     }
-
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Delete, Get, Param } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { TagService } from "./tag.service";
 import { TagEntity } from "./tag.entity";
@@ -22,5 +22,11 @@ export class TagController {
         return await this.tagService.findByTag(id);
     }
 
+    @Delete(':id')
+    @ApiOperation({ summary: 'Delete tag' })
+    @ApiImplicitParam({ name: 'id', type: String })
+    async deleteTag(@Param() id: string): Promise<TagEntity> {
+        return this.tagService.delete(id);
+    }
 
 }

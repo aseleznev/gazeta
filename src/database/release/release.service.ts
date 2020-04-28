@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { ReleaseEntity } from "./release.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Injectable } from '@nestjs/common';
+import { ReleaseEntity } from './release.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReleaseService {
@@ -15,10 +15,9 @@ export class ReleaseService {
     }
 
     async find(id: string): Promise<ReleaseEntity> {
-
         const release = await this.releaseRepository
             .createQueryBuilder('release')
-            .innerJoinAndSelect('release.image', 'releaseImage')
+            .leftJoinAndSelect('release.image', 'releaseImage')
             .innerJoinAndSelect('release.articles', 'articles')
             .leftJoinAndSelect('articles.image', 'image')
             .leftJoinAndSelect('articles.author', 'author')
@@ -37,7 +36,7 @@ export class ReleaseService {
 
     async delete(id: string): Promise<ReleaseEntity> {
         const release = await this.releaseRepository.findOne(id);
-        if (!release){
+        if (!release) {
             return release;
         }
         return await this.releaseRepository.remove(release);

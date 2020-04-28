@@ -22,6 +22,14 @@ export class TagService {
         return await this.tagRepository.save(tag);
     }
 
+    async delete(id: string): Promise<TagEntity> {
+        const tag = await this.tagRepository.findOne(id);
+        if (!tag){
+            return tag;
+        }
+        return await this.tagRepository.remove(tag);
+    }
+
     async findByTag(id: string): Promise<TagEntity> {
         return this.tagRepository.findOne(id, {
             relations: ['articles', 'articles.image', 'articles.author', 'articles.release']
