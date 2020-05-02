@@ -14,6 +14,10 @@ export class ArticleService {
         return await this.articleRepository.find({ relations: ['tags', 'author', 'image'] });
     }
 
+    async findOne(id: string): Promise<ArticleEntity> {
+        return await this.articleRepository.findOne({ id });
+    }
+
     async find(id: string): Promise<ArticleEntity> {
         const article = await this.articleRepository
             .createQueryBuilder('article')
@@ -22,8 +26,22 @@ export class ArticleService {
             .leftJoinAndSelect('article.image', 'articleImage')
             .leftJoinAndSelect('article.author', 'author')
             .leftJoinAndSelect('article.tags', 'tags')
-            .where('article.id=:id')
-            .setParameter('id', id)
+            //.leftJoinAndSelect('article.reactions', 'reactions')
+            // bug?(
+            // .leftJoinAndMapOne(
+            //     'article.reactions',
+            //     subQuery => {
+            //         return subQuery
+            //             .select('articleId')
+            //             .addSelect('sum(`like`)', 'like')
+            //             .addSelect('sum(`dislike`)', 'dislike')
+            //             .from('reaction', 'reaction')
+            //             .groupBy('reaction.articleId');
+            //     },
+            //     'likes',
+            //     'likes.articleId=article.id'
+            // )
+            .where('article.id=:id', { id })
             .orderBy('content.order', 'ASC')
             .getOne();
 
@@ -40,6 +58,5 @@ export class ArticleService {
             return article;
         }
         return await this.articleRepository.remove(article);
-        //return await this.articleRepository.delete({ id });
     }
 }

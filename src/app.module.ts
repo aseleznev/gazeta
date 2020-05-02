@@ -8,9 +8,9 @@ import { ArticleContentModule } from './database/article-content/article-content
 import { TagModule } from './database/tag/tag.module';
 import { ImageModule } from './database/image/image.module';
 import { ConfigModule, ConfigService } from 'nestjs-config';
-import { join, resolve } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { AuthorModule } from "./database/author/author.module";
+import { resolve } from 'path';
+import { AuthorModule } from './database/author/author.module';
+import { ReactionModule } from './database/reaction/reaction.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -33,7 +33,8 @@ const ENV = process.env.NODE_ENV;
         ArticleContentModule,
         TagModule,
         ImageModule,
-        AuthorModule
+        AuthorModule,
+        ReactionModule
     ],
     controllers: [AppController],
     providers: [AppService]

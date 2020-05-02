@@ -15,6 +15,7 @@ import { TagEntity } from '../tag/tag.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { ArticleContentEntity } from '../article-content/article-content.entity';
 import { AuthorEntity } from '../author/author.entity';
+import { ReactionEntity } from '../reaction/reaction.entity';
 
 @Entity('article')
 export class ArticleEntity {
@@ -46,6 +47,10 @@ export class ArticleEntity {
     @Column('text', { nullable: true })
     description: string;
 
+    // @ApiProperty()
+    // @Column('integer', { nullable: true })
+    // likes: number;
+
     @ApiProperty({ type: () => ReleaseEntity })
     @ManyToOne(type => ReleaseEntity, { onDelete: 'CASCADE' })
     release: ReleaseEntity;
@@ -75,4 +80,11 @@ export class ArticleEntity {
     @ApiProperty({ type: () => AuthorEntity })
     @ManyToOne(type => AuthorEntity, { cascade: true, nullable: true })
     author: AuthorEntity;
+
+    @ApiProperty({ type: () => ReactionEntity, isArray: true })
+    @OneToMany(
+        type => ReactionEntity,
+        reaction => reaction.article
+    )
+    reactions: ReactionEntity[];
 }
