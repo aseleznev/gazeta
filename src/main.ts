@@ -2,14 +2,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from 'nestjs-config';
+import { logger } from './middleware/logger.middleware';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     app.enableCors();
 
+    //app.use(logger);
+
     const configService = app.get(ConfigService);
-    const port = configService.get('appConfig').nodePort;
+    const port = configService.get('app').nodePort;
 
     app.setGlobalPrefix('api');
 

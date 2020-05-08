@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
@@ -7,6 +7,7 @@ import { ArticleEntity } from './article.entity';
 import { ReactionEntity } from '../reaction/reaction.entity';
 import { ReactionService } from '../reaction/reaction.service';
 import { ArticleDto } from './article.dto';
+import { ApiKeyAuthGuard } from '../auth/guards/api-key-auth.guard';
 
 @ApiTags('article')
 @Controller('article')
@@ -19,6 +20,7 @@ export class ArticleController {
         return await this.articleService.findAll();
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Post()
     @ApiOperation({ summary: 'Create article' })
     @ApiImplicitBody({
@@ -33,6 +35,7 @@ export class ArticleController {
         return this.articleService.save(article);
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Post(':id/like/:count')
     @ApiImplicitParam({ name: 'id', type: String })
     @ApiImplicitParam({ name: 'count', type: String })
@@ -42,6 +45,7 @@ export class ArticleController {
         return this.reactionService.like(article, +count);
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Post(':id/dislike/:count')
     @ApiImplicitParam({ name: 'id', type: String })
     @ApiImplicitParam({ name: 'count', type: String })
@@ -51,6 +55,7 @@ export class ArticleController {
         return this.reactionService.dislike(article, +count);
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Delete(':id')
     @ApiOperation({ summary: 'Delete article' })
     @ApiImplicitParam({ name: 'id', type: String })

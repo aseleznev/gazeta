@@ -1,8 +1,9 @@
-import { Controller, Delete, Get, Param } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { TagService } from "./tag.service";
-import { TagEntity } from "./tag.entity";
-import { ApiImplicitParam } from "@nestjs/swagger/dist/decorators/api-implicit-param.decorator";
+import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { TagService } from './tag.service';
+import { TagEntity } from './tag.entity';
+import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
+import { ApiKeyAuthGuard } from '../auth/guards/api-key-auth.guard';
 
 @Controller('tag')
 @ApiTags('tag')
@@ -22,11 +23,11 @@ export class TagController {
         return await this.tagService.findByTag(id);
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Delete(':id')
     @ApiOperation({ summary: 'Delete tag' })
     @ApiImplicitParam({ name: 'id', type: String })
     async deleteTag(@Param() id: string): Promise<TagEntity> {
         return this.tagService.delete(id);
     }
-
 }

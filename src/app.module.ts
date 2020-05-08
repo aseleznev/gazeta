@@ -11,6 +11,7 @@ import { ConfigModule, ConfigService } from 'nestjs-config';
 import { resolve } from 'path';
 import { AuthorModule } from './database/author/author.module';
 import { ReactionModule } from './database/reaction/reaction.module';
+import { AuthModule } from './database/auth/auth.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -21,11 +22,12 @@ const ENV = process.env.NODE_ENV;
         //     //serveStaticOptions: { extensions: ['png'] }
         //     //exclude: ['/api*']
         // }),
+        //ConfigModule.forRoot({ envFilePath: resolve(process.cwd(), !ENV ? '.env' : `.env.${ENV}`) }),
         ConfigModule.load(resolve(__dirname, 'config', '**', '!(*.d).{ts,js}'), {
             path: resolve(process.cwd(), !ENV ? '.env' : `.env.${ENV}`)
         }),
         TypeOrmModule.forRootAsync({
-            useFactory: (config: ConfigService) => config.get('appConfig'),
+            useFactory: (config: ConfigService) => config.get('app'),
             inject: [ConfigService]
         }),
         ReleaseModule,
@@ -34,9 +36,10 @@ const ENV = process.env.NODE_ENV;
         TagModule,
         ImageModule,
         AuthorModule,
-        ReactionModule
+        ReactionModule,
+        AuthModule
     ],
     controllers: [AppController],
-    providers: [AppService]
+    providers: [AppService, AuthModule]
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
 export default {
     nodePort: parseInt(process.env.NODE_PORT),
+    cmsApiKey: process.env.CMS_API_KEY,
     type: process.env.TYPEORM_TYPE,
     host: process.env.TYPEORM_HOST,
     username: process.env.TYPEORM_USERNAME,
