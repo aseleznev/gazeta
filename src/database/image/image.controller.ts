@@ -1,5 +1,5 @@
 import { Controller, Post, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname, join } from 'path';
 import { diskStorage } from 'multer';
@@ -15,6 +15,7 @@ const editFileName = (req, file, callback) => {
 @ApiTags('image')
 @Controller('image')
 export class ImageController {
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Post()
     @UseInterceptors(

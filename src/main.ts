@@ -20,6 +20,7 @@ async function bootstrap() {
         .setTitle('GazEta')
         .setDescription('Gazprom nedra corporate newspaper')
         .setVersion('1.0')
+        .addApiKey({ type: 'apiKey' }, 'apiKey')
         .addTag('release')
         .addTag('article')
         .addTag('article-content')

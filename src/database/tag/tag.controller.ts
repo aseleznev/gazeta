@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TagService } from './tag.service';
 import { TagEntity } from './tag.entity';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
@@ -23,6 +23,7 @@ export class TagController {
         return await this.tagService.findByTag(id);
     }
 
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Delete(':id')
     @ApiOperation({ summary: 'Delete tag' })

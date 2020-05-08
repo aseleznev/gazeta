@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
 import { ReleaseService } from './release.service';
@@ -24,6 +24,7 @@ export class ReleaseController {
         return await this.releaseService.find(id);
     }
 
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Post()
     @ApiOperation({ summary: 'Create release' })
@@ -41,6 +42,7 @@ export class ReleaseController {
         return await this.releaseService.save(release);
     }
 
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Delete(':id')
     @ApiOperation({ summary: 'Delete release' })

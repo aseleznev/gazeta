@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
 import { ArticleService } from './article.service';
@@ -20,6 +20,7 @@ export class ArticleController {
         return await this.articleService.findAll();
     }
 
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Post()
     @ApiOperation({ summary: 'Create article' })
@@ -35,6 +36,7 @@ export class ArticleController {
         return this.articleService.save(article);
     }
 
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Post(':id/like/:count')
     @ApiImplicitParam({ name: 'id', type: String })
@@ -45,6 +47,7 @@ export class ArticleController {
         return this.reactionService.like(article, +count);
     }
 
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Post(':id/dislike/:count')
     @ApiImplicitParam({ name: 'id', type: String })
@@ -55,6 +58,7 @@ export class ArticleController {
         return this.reactionService.dislike(article, +count);
     }
 
+    @ApiBearerAuth('apiKey')
     @UseGuards(ApiKeyAuthGuard)
     @Delete(':id')
     @ApiOperation({ summary: 'Delete article' })
