@@ -36,8 +36,8 @@ export class ArticleController {
         return this.articleService.save(article);
     }
 
-    @ApiBearerAuth('apiKey')
-    @UseGuards(ApiKeyAuthGuard)
+    // @ApiBearerAuth('apiKey')
+    // @UseGuards(ApiKeyAuthGuard)
     @Post(':id/like/:count')
     @ApiImplicitParam({ name: 'id', type: String })
     @ApiImplicitParam({ name: 'count', type: String })
@@ -47,8 +47,8 @@ export class ArticleController {
         return this.reactionService.like(article, +count);
     }
 
-    @ApiBearerAuth('apiKey')
-    @UseGuards(ApiKeyAuthGuard)
+    // @ApiBearerAuth('apiKey')
+    // @UseGuards(ApiKeyAuthGuard)
     @Post(':id/dislike/:count')
     @ApiImplicitParam({ name: 'id', type: String })
     @ApiImplicitParam({ name: 'count', type: String })

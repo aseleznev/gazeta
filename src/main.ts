@@ -9,7 +9,7 @@ async function bootstrap() {
 
     app.enableCors();
 
-    //app.use(logger);
+    app.use(logger);
 
     const configService = app.get(ConfigService);
     const port = configService.get('app').nodePort;
