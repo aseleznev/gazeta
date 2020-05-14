@@ -1,8 +1,8 @@
-import { Column, Entity, OneToOne, PrimaryColumn } from "typeorm";
-import { ApiProperty } from "@nestjs/swagger";
-import { ReleaseEntity } from "../release/release.entity";
-import { ArticleEntity } from "../article/article.entity";
-import { ArticleContentEntity } from "../article-content/article-content.entity";
+import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { ReleaseEntity } from '../release/release.entity';
+import { ArticleEntity } from '../article/article.entity';
+import { ArticleContentEntity } from '../article-content/article-content.entity';
 
 @Entity('image')
 export class ImageEntity {

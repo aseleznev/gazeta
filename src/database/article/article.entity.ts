@@ -47,9 +47,9 @@ export class ArticleEntity {
     @Column('text', { nullable: true })
     description: string;
 
-    // @ApiProperty()
-    // @Column('integer', { nullable: true })
-    // likes: number;
+    @ApiProperty()
+    @Column('varchar', { nullable: true })
+    writer: number;
 
     @ApiProperty({ type: () => ReleaseEntity })
     @ManyToOne(type => ReleaseEntity, { onDelete: 'CASCADE' })
