@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from 'nestjs-config';
 import { logger } from './middleware/logger.middleware';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -10,6 +11,8 @@ async function bootstrap() {
     app.enableCors();
 
     app.use(logger);
+    app.use(bodyParser.json({ limit: '50mb' }));
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
     const configService = app.get(ConfigService);
     const port = configService.get('app').nodePort;
