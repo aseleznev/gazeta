@@ -36,7 +36,7 @@ export class ArticleEntity {
     title: string;
 
     @ApiProperty()
-    @Column('date', { nullable: true })
+    @Column('varchar', { nullable: true })
     date: string;
 
     @ApiProperty()
