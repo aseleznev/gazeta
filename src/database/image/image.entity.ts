@@ -17,7 +17,7 @@ export class ImageEntity {
     id: string;
 
     @ApiProperty()
-    @Column('varchar', { nullable: true })
+    @Column('text', { nullable: true })
     alt: string;
 
     @ApiProperty()
