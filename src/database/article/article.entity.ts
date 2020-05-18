@@ -84,7 +84,8 @@ export class ArticleEntity {
     @ApiProperty({ type: () => ReactionEntity, isArray: true })
     @OneToMany(
         type => ReactionEntity,
-        reaction => reaction.article
+        reaction => reaction.article,
+        { cascade: true, nullable: true, onDelete: 'CASCADE' }
     )
     reactions: ReactionEntity[];
 }
