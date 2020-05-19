@@ -22,6 +22,6 @@ export class ReactionEntity {
     dislike: number;
 
     @ApiProperty({ type: () => ArticleEntity })
-    @ManyToOne(type => ArticleEntity)
+    @ManyToOne(type => ArticleEntity, { onDelete: 'CASCADE' })
     article: ArticleEntity;
 }
