@@ -4,7 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { extname, join } from 'path';
 import { diskStorage } from 'multer';
 import { ApiKeyAuthGuard } from '../auth/guards/api-key-auth.guard';
-const destination = join(__dirname, '..', '..', '..', 'storage');
+const destination = join(__dirname, '..', '..', '..', '..', 'storage');
 
 const editFileName = (req, file, callback) => {
     const name = file.originalname.split('.')[0];
