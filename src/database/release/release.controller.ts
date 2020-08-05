@@ -50,4 +50,18 @@ export class ReleaseController {
     async deleteRelease(@Param() id: string): Promise<ReleaseEntity> {
         return this.releaseService.delete(id);
     }
+
+    @Post('log')
+    @ApiOperation({ summary: 'log request data for debug' })
+    @ApiImplicitBody({
+        content: {},
+        type: ReleaseEntity,
+        name: 'release',
+        description: 'Release data',
+        required: false,
+        isArray: false
+    })
+    async logRequest(@Body() release: any) {
+        console.log(release);
+    }
 }
