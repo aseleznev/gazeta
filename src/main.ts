@@ -14,7 +14,7 @@ async function bootstrap() {
     app.use(logger);
     app.use(helmet());
     app.use(bodyParser.json({ limit: '50mb' }));
-    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+    //app.use(bodyParser.urlencoded({ limit: '50mb', extended: false, parameterLimit: 50000 }));
 
     const configService = app.get(ConfigService);
     const port = configService.get('app').nodePort;
