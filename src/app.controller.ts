@@ -13,7 +13,7 @@ export class AppController {
 
     @Get('storage/:imgId')
     test(@Param('imgId') imgId, @Res() res) {
-        const imgPath = join(__dirname, '..', 'storage', imgId);
+        const imgPath = join(__dirname, '..', '..', 'storage', imgId);
         return res.sendFile(imgPath);
     }
 }
