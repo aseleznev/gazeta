@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
 import { ReleaseService } from './release.service';
 import { ReleaseEntity } from './release.entity';
 import { ApiKeyAuthGuard } from '../auth/guards/api-key-auth.guard';
+import * as rawbody from 'raw-body';
 
 @ApiTags('release')
 @Controller('release')
@@ -36,8 +37,17 @@ export class ReleaseController {
         required: true,
         isArray: false
     })
-    async saveRelease(@Body() release: ReleaseEntity): Promise<ReleaseEntity> {
+    async saveRelease(@Body() release: ReleaseEntity, @Req() req): Promise<ReleaseEntity> {
         // const releaseEntity = new ReleaseEntity(release);
+        // if (req.readable) {
+        //     // body is ignored by NestJS
+        //     const raw = await rawbody(req);
+        //     const text = raw.toString().trim();
+        //     console.log('body:', text);
+        // } else {
+        //     // body is parsed by NestJS
+        //     console.log('data:', release);
+        // }
         await this.releaseService.delete(release.id);
         return await this.releaseService.save(release);
     }
@@ -53,15 +63,15 @@ export class ReleaseController {
 
     @Post('log')
     @ApiOperation({ summary: 'log request data for debug' })
-    @ApiImplicitBody({
-        content: {},
-        type: ReleaseEntity,
-        name: 'release',
-        description: 'Release data',
-        required: false,
-        isArray: false
-    })
-    async logRequest(@Body() release: any) {
-        console.log(release);
+    async logRequest(@Body() data, @Req() req) {
+        if (req.readable) {
+            // body is ignored by NestJS
+            const raw = await rawbody(req);
+            const text = raw.toString().trim();
+            console.log('body:', text);
+        } else {
+            // body is parsed by NestJS
+            console.log('data:', data);
+        }
     }
 }
