@@ -5,12 +5,14 @@ import { ConfigService } from 'nestjs-config';
 import { logger } from './middleware/logger.middleware';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
+import * as requestIp from 'request-ip';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     app.enableCors();
 
+    app.use(requestIp.mw());
     app.use(logger);
     app.use(helmet());
     app.use(bodyParser.json({ limit: '50mb' }));
