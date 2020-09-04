@@ -6,22 +6,35 @@ import { ReleaseService } from './release.service';
 import { ReleaseEntity } from './release.entity';
 import { ApiKeyAuthGuard } from '../auth/guards/api-key-auth.guard';
 import * as rawbody from 'raw-body';
+import { StatService } from '../stat/stat.service';
+import { StatEntity } from '../stat/stat.entity';
 
 @ApiTags('release')
 @Controller('release')
 export class ReleaseController {
-    constructor(private readonly releaseService: ReleaseService) {}
+    constructor(private readonly releaseService: ReleaseService, private readonly statService: StatService) {}
 
     @Get()
     @ApiOperation({ summary: 'Get all releases' })
-    async getReleases(): Promise<ReleaseEntity[]> {
+    async getReleases(@Req() req): Promise<ReleaseEntity[]> {
+        console.log('client ip');
+        console.log(req.clientIp);
         return await this.releaseService.findAll();
     }
 
     @Get(':id')
     @ApiOperation({ summary: 'Get release for id' })
     @ApiImplicitParam({ name: 'id', type: String })
-    async getRelease(@Param('id') id: string): Promise<ReleaseEntity> {
+    async getRelease(@Req() req, @Param('id') id: string): Promise<ReleaseEntity> {
+        const stat = new StatEntity({
+            userAgent: req.headers['user-agent'],
+            entityId: id,
+            entityType: 'release',
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString(),
+            ip: req.clientIp
+        });
+        await this.statService.save(stat);
         return await this.releaseService.find(id);
     }
 

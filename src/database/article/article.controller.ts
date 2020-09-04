@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
@@ -8,11 +8,17 @@ import { ReactionEntity } from '../reaction/reaction.entity';
 import { ReactionService } from '../reaction/reaction.service';
 import { ArticleDto } from './article.dto';
 import { ApiKeyAuthGuard } from '../auth/guards/api-key-auth.guard';
+import { StatEntity } from '../stat/stat.entity';
+import { StatService } from '../stat/stat.service';
 
 @ApiTags('article')
 @Controller('article')
 export class ArticleController {
-    constructor(private readonly articleService: ArticleService, private readonly reactionService: ReactionService) {}
+    constructor(
+        private readonly articleService: ArticleService,
+        private readonly reactionService: ReactionService,
+        private readonly statService: StatService
+    ) {}
 
     @Get()
     @ApiOperation({ summary: 'Get all articles' })
@@ -70,7 +76,17 @@ export class ArticleController {
     @Get(':id')
     @ApiOperation({ summary: 'Get article for id' })
     @ApiImplicitParam({ name: 'id', type: String })
-    async getArticle(@Param('id') id: string): Promise<ArticleEntity | ArticleDto> {
+    async getArticle(@Req() req, @Param('id') id: string): Promise<ArticleEntity | ArticleDto> {
+        const stat = new StatEntity({
+            userAgent: req.headers['user-agent'],
+            entityId: id,
+            entityType: 'article',
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString(),
+            ip: req.clientIp
+        });
+        await this.statService.save(stat);
+
         const article = await this.articleService.find(id);
         if (article) {
             const reactions = await this.reactionService.getArticleReactions(id);
