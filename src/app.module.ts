@@ -12,6 +12,7 @@ import { resolve } from 'path';
 import { AuthorModule } from './database/author/author.module';
 import { ReactionModule } from './database/reaction/reaction.module';
 import { AuthModule } from './database/auth/auth.module';
+import { StatModule } from './database/stat/stat.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -37,7 +38,8 @@ const ENV = process.env.NODE_ENV;
         ImageModule,
         AuthorModule,
         ReactionModule,
-        AuthModule
+        AuthModule,
+        StatModule
     ],
     controllers: [AppController],
     providers: [AppService, AuthModule]
